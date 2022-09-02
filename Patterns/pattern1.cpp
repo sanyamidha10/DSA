@@ -1,10 +1,28 @@
+// *****
+// *****
+// *****
+// *****
+// *****
+
+
 #include<iostream>
 using namespace std;
 
 int main(){
-    cout<<"Heelo world!!";
 
-    for(int i=0; i<=5; i++){
-        cout<<i;
+cout<<"Enter the number of rows: "<<endl;
+int n;
+cin>>n;
+
+int row = 1;
+while(row<=n){
+    int col = 1;
+    while(col<=n){
+        cout<<"*";
+        col++;
     }
+    cout<<endl;
+    row++;
+
+}
 }
