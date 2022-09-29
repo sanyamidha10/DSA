@@ -13,7 +13,7 @@ int main(){
     cin>>n;
 
     int row = 1;
-    char ch = 'A' + row -1;
+    char ch = 'A';
     while(row<=n){
         int col = 1;
         while(col<=row){
