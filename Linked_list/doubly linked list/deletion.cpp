@@ -5,39 +5,42 @@ class node{
     public:
     int data;
     node* next;
+    node* prev;
 
     node(int data){
         this->data = data;
         this->next = NULL;
+        this->prev = NULL;
     }
 
     ~node(){
         int value = this->data;
-        if(this->next!=NULL){
+        if(next!=NULL){
             delete next;
-            this->next=NULL;
+            next = NULL;
         }
-
-        cout<<"destructor called for "<<value<<endl;
+        cout<<"Memory free for "<<value<<endl;
     }
+
 };
 
-void insertAtHead(node* &head, int d){
+void insertATHead(node* &head, int d){
     node* temp = new node(d);
     temp->next = head;
+    head->prev = temp;
     head = temp;
 }
 
 void insertAtTail(node* &tail, int d){
     node* temp = new node(d);
     tail->next = temp;
+    temp->prev = tail;
     tail = temp;
 }
 
-
-void insertAtPosition(node* &head, node* &tail, int position, int d){
-    if(position == 1){
-        insertAtHead(head, d);
+void insertAtPosition(node* &head, node*&tail, int position, int data){
+    if(position==1){
+        insertATHead(head, data);
         return;
     }
 
@@ -49,21 +52,31 @@ void insertAtPosition(node* &head, node* &tail, int position, int d){
     }
 
     if(temp->next == NULL){
-        insertAtTail(tail, d);
+        insertAtTail(tail, data);
         return;
     }
 
-    node* nodeToInsert = new node(d);
+    node* nodeToInsert = new node(data);
+    // temp->next = nodeToInsert;
+    // nodeToInsert->prev = temp;
+    // temp->next->prev = nodeToInsert;
+    // nodeToInsert->next = temp->next;
+
     nodeToInsert->next = temp->next;
+    temp->next->prev = nodeToInsert;
     temp->next = nodeToInsert;
+    nodeToInsert->prev = temp;
+
+
 }
 
 void deleteAtPosition(int position, node* &head){
     if(position == 1){
-        node* temp = head;
-        head = head->next;
-        temp->next=NULL;
-        delete temp;
+       node* temp = head;
+       temp->next->prev = NULL;
+       head = temp->next;
+       temp->next = NULL;
+       delete temp;
     }
 
 
@@ -78,6 +91,7 @@ void deleteAtPosition(int position, node* &head){
             count++;
         }
 
+        curr->prev = NULL;
         prev->next = curr->next;
         curr->next = NULL;
         delete curr;
@@ -94,16 +108,23 @@ void printingLL(node* &head){
 
 int main(){
     node* node1 = new node(10);
+
     node* head = node1;
     node* tail = node1;
 
-    insertAtTail(tail, 12);
-    insertAtTail(tail, 15);
-    insertAtPosition(head, tail, 4, 22);
-    deleteAtPosition(3, head);
+    
 
+    insertATHead(head, 0);
+    insertATHead(head, 5);
+    insertAtTail(tail, 20);
+    insertAtTail(tail, 30);
+    insertAtTail(tail, 40);
+
+    insertAtPosition(head, tail, 5, 25);
+
+    // cout<<head;
+    // cout<<tail;
+
+    deleteAtPosition(4, head);
     printingLL(head);
-
-
-
 }
